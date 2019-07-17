@@ -1,6 +1,8 @@
 import { createGlobalStyle } from "styled-components";
 import colors from "./colors";
 
+import "rc-slider/assets/index.css";
+
 const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
