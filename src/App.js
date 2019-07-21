@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
 
 import "./config/reactotron";
 
@@ -12,22 +13,25 @@ import Header from "./components/Header";
 import { Wrapper, Container, Content } from "./styles/components";
 
 import Routes from "./routes";
+import store from "./store";
 
 function App() {
   return (
-    <BrowserRouter>
-      <GlobalStyle />
-      <Wrapper>
-        <Container>
-          <Sidebar />
-          <Content>
-            <Header />
-            <Routes />
-          </Content>
-        </Container>
-        <Player />
-      </Wrapper>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <GlobalStyle />
+        <Wrapper>
+          <Container>
+            <Sidebar />
+            <Content>
+              <Header />
+              <Routes />
+            </Content>
+          </Container>
+          <Player />
+        </Wrapper>
+      </BrowserRouter>
+    </Provider>
   );
 }
 
