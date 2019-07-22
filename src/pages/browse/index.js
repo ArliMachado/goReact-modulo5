@@ -1,60 +1,60 @@
-import React from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { Creators as PlaylistsActions } from "../../store/ducks/playlists";
 
 import { Container, Title, List, Playlist } from "./styles";
 
-const Browse = () => (
-  <Container>
-    <Title>Navegar</Title>
+class Browser extends Component {
+  static propTypes = {
+    getPlaylistsRequest: PropTypes.func.isRequired,
+    playlists: PropTypes.shape({
+      data: PropTypes.arrayOf(
+        PropTypes.shape({
+          id: PropTypes.number,
+          title: PropTypes.string,
+          thumbnail: PropTypes.string,
+          description: PropTypes.string
+        })
+      )
+    }).isRequired
+  };
 
-    <List>
-      <Playlist to="/playlists/1">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/en/thumb/3/34/Silverchair_-_Diorama.jpg/220px-Silverchair_-_Diorama.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>
-          Relaxe enquanto você programa ouvindo apenas as melhores do rock
-          mundial!
-        </p>
-      </Playlist>
+  componentDidMount() {
+    const { getPlaylistsRequest } = this.props;
+    getPlaylistsRequest();
+  }
+  render() {
+    const { playlists } = this.props;
 
-      <Playlist to="/playlists/1">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/en/thumb/3/34/Silverchair_-_Diorama.jpg/220px-Silverchair_-_Diorama.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>
-          Relaxe enquanto você programa ouvindo apenas as melhores do rock
-          mundial!
-        </p>
-      </Playlist>
+    return (
+      <Container>
+        <Title>Navegar</Title>
 
-      <Playlist to="/playlists/1">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/en/thumb/3/34/Silverchair_-_Diorama.jpg/220px-Silverchair_-_Diorama.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>
-          Relaxe enquanto você programa ouvindo apenas as melhores do rock
-          mundial!
-        </p>
-      </Playlist>
+        <List>
+          {playlists.data.map(playlist => (
+            <Playlist key={playlist.id} to={`/playlists/${playlist.id}`}>
+              <img src={playlist.thumbnail} alt={playlist.title} />
+              <strong>{playlist.title}</strong>
+              <p>{playlist.description}</p>
+            </Playlist>
+          ))}
+        </List>
+      </Container>
+    );
+  }
+}
 
-      <Playlist to="/playlists/1">
-        <img
-          src="https://upload.wikimedia.org/wikipedia/en/thumb/3/34/Silverchair_-_Diorama.jpg/220px-Silverchair_-_Diorama.jpg"
-          alt="Playlist"
-        />
-        <strong>Rock dos bons</strong>
-        <p>
-          Relaxe enquanto você programa ouvindo apenas as melhores do rock
-          mundial!
-        </p>
-      </Playlist>
-    </List>
-  </Container>
-);
-export default Browse;
+const mapStateToProps = state => ({
+  playlists: state.playlists
+});
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(PlaylistsActions, dispatch);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Browser);
