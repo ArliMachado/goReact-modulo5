@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Slider from "rc-slider";
 import Sound from "react-sound";
 import PropTypes from "prop-types";
@@ -30,14 +30,18 @@ const Player = ({ player }) => {
         <Sound url={player.currentSong.file} playStatus={player.status} />
       )}
       <Current>
-        <img
-          src="https://upload.wikimedia.org/wikipedia/en/thumb/3/34/Silverchair_-_Diorama.jpg/220px-Silverchair_-_Diorama.jpg"
-          alt="Cover"
-        />
-        <div>
-          <span>Across the Night</span>
-          <small>Silverchair</small>
-        </div>
+        {!!player.currentSong && (
+          <Fragment>
+            <img
+              src={player.currentSong.thumbnail}
+              alt={player.currentSong.title}
+            />
+            <div>
+              <span>{player.currentSong.title}</span>
+              <small>{player.currentSong.author}</small>
+            </div>
+          </Fragment>
+        )}
       </Current>
 
       <Progress>
@@ -88,6 +92,9 @@ const Player = ({ player }) => {
 Player.propTypes = {
   player: PropTypes.shape({
     currentSong: PropTypes.shape({
+      thumbnail: PropTypes.string,
+      title: PropTypes.string,
+      author: PropTypes.string,
       file: PropTypes.string
     }),
     status: PropTypes.string
