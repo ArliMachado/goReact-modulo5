@@ -22,6 +22,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: 'Montserrat', sans-serif;
     color: ${colors.white};
   }
+
+  button {
+    cursor: pointer;
+  }
 `;
 
 export default GlobalStyle;
